@@ -1,0 +1,69 @@
+# ExpenseFlow 
+
+A clean and responsive personal expense tracker built with **HTML, CSS and vanilla JavaScript**.
+
+## Features
+
+- Add and delete expenses
+- Expense categories
+- Search transactions
+- Filter by category
+- Total spending calculation
+- Current month spending
+- Average expense
+- Top spending category
+- Category-wise spending visualization
+- Six-month spending overview
+- Data persistence using browser LocalStorage
+- Responsive design for desktop, tablet and mobile
+- No backend or external database required
+
+## Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+- Browser LocalStorage
+- Google Fonts
+
+## How to Run
+
+1. Download or clone this repository.
+2. Open `index.html` in your browser.
+
+For the best development experience, use VS Code with the **Live Server** extension.
+
+## Project Structure
+
+```text
+expense-tracker/
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+```
+
+## What I Learned
+
+- JavaScript event handling
+- Array methods such as `map`, `filter` and `reduce`
+- LocalStorage
+- Form validation
+- Dynamic UI rendering
+- Responsive CSS
+- Data filtering and sorting
+- Basic dashboard/analytics design
+
+## Future Improvements
+
+- User authentication
+- Backend API using Flask
+- PostgreSQL or MongoDB database
+- Monthly budget limits
+- Export expenses as CSV
+- Dark mode
+- Expense charts using Chart.js
+
+## License
+
+This project is open source and available for learning and portfolio use.
