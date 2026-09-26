@@ -46,3 +46,28 @@ const demoExpenses = [
 let expenses = loadExpenses();
 
 const $ = (id) => document.getElementById(id);
+
+function loadExpenses() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(demoExpenses));
+  return demoExpenses;
+}
+
+function saveExpenses() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses));
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0
+  }).format(value);
+}
