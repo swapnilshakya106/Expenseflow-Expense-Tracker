@@ -71,3 +71,29 @@ function formatCurrency(value) {
     maximumFractionDigits: 0
   }).format(value);
 }
+
+function formatDate(dateString) {
+  return new Date(`${dateString}T00:00:00`).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function categoryIcon(category) {
+  const icons = {
+    Food: "🍴",
+    Transport: "🚌",
+    Shopping: "🛍",
+    Bills: "⚡",
+    Entertainment: "🎬",
+    Health: "♥",
+    Education: "📚",
+    Other: "•"
+  };
+  return icons[category] || "•";
+}
+
+function getSortedExpenses(list = expenses) {
+  return [...list].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
