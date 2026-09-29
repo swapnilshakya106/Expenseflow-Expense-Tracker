@@ -139,3 +139,15 @@ function transactionHTML(expense) {
     </div>
   `;
 }
+
+function renderRecentTransactions() {
+  const recent = getSortedExpenses().slice(0, 6);
+  $("recentTransactions").innerHTML = recent.length
+    ? recent.map(transactionHTML).join("")
+    : `<div class="empty">No expenses yet. Add your first expense.</div>`;
+  bindDeleteButtons();
+}
+
+function renderAllTransactions() {
+  const search = $("searchInput").value.trim().toLowerCase();
+  const category = $("filterCategory").value;
