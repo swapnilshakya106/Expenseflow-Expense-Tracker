@@ -151,3 +151,47 @@ function renderRecentTransactions() {
 function renderAllTransactions() {
   const search = $("searchInput").value.trim().toLowerCase();
   const category = $("filterCategory").value;
+
+const filtered = getSortedExpenses().filter((expense) => {
+    const matchesSearch =
+      expense.title.toLowerCase().includes(search) ||
+      expense.category.toLowerCase().includes(search) ||
+      (expense.note || "").toLowerCase().includes(search);
+
+    const matchesCategory = category === "all" || expense.category === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  $("allTransactions").innerHTML = filtered.length
+    ? filtered.map(transactionHTML).join("")
+    : `<div class="empty">No matching transactions found.</div>`;
+
+  bindDeleteButtons();
+}
+
+function getCategoryTotals() {
+  return expenses.reduce((totals, expense) => {
+    totals[expense.category] = (totals[expense.category] || 0) + Number(expense.amount);
+    return totals;
+  }, {});
+}
+
+function renderCategoryChart() {
+  const totals = getCategoryTotals();
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+  const max = entries[0]?.[1] || 1;
+
+  $("categoryChart").innerHTML = entries.length
+    ? entries.map(([category, amount]) => `
+      <div class="category-row">
+        <div class="category-meta">
+          <span>${categoryIcon(category)} ${escapeHTML(category)}</span>
+          <strong>${formatCurrency(amount)}</strong>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" style="width:${(amount / max) * 100}%"></div>
+        </div>
+      </div>
+    `).join("")
+    : `<div class="empty">No category data available.</div>`;
+}
