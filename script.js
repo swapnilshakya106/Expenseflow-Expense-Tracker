@@ -195,3 +195,54 @@ function renderCategoryChart() {
     `).join("")
     : `<div class="empty">No category data available.</div>`;
 }
+
+function renderAnalytics() {
+  const totals = getCategoryTotals();
+  const entries = Object.entries(totals).sort((a, b) => b[1] - a[1]);
+
+  $("analyticsBreakdown").innerHTML = entries.length
+    ? entries.map(([category, amount]) => {
+        const total = expenses.reduce((sum, item) => sum + Number(item.amount), 0);
+        const percentage = total ? Math.round((amount / total) * 100) : 0;
+        return `
+          <div class="analytics-item">
+            <span>${categoryIcon(category)} ${escapeHTML(category)}</span>
+            <strong>${formatCurrency(amount)} · ${percentage}%</strong>
+          </div>
+        `;
+      }).join("")
+    : `<div class="empty">Add expenses to see analytics.</div>`;
+}
+
+function renderMonthlyChart() {
+  const months = [];
+  const now = new Date();
+
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push({
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      name: date.toLocaleDateString("en-IN", { month: "short" })
+    });
+  }
+  
+  const values = months.map((item) => {
+    return expenses
+      .filter((expense) => {
+        const date = new Date(`${expense.date}T00:00:00`);
+        return date.getFullYear() === item.year && date.getMonth() === item.month;
+      })
+      .reduce((sum, expense) => sum + Number(expense.amount), 0);
+  });
+
+const max = Math.max(...values, 1);
+
+  $("monthlyChart").innerHTML = months.map((item, index) => `
+    <div class="month-column">
+      <span class="month-value">${formatCurrency(values[index])}</span>
+      <div class="month-bar" style="height:${Math.max((values[index] / max) * 75, 3)}%"></div>
+      <span class="month-name">${item.name}</span>
+    </div>
+  `).join("");
+}
