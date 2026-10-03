@@ -246,3 +246,37 @@ const max = Math.max(...values, 1);
     </div>
   `).join("");
 }
+
+function deleteExpense(id) {
+  expenses = expenses.filter((expense) => expense.id !== id);
+  saveExpenses();
+  renderDashboard();
+  renderAllTransactions();
+  showToast("Expense deleted");
+}
+
+function bindDeleteButtons() {
+  document.querySelectorAll("[data-delete]").forEach((button) => {
+    button.addEventListener("click", () => deleteExpense(button.dataset.delete));
+  });
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function openModal() {
+  $("modalBackdrop").classList.add("show");
+  $("date").value = new Date().toISOString().split("T")[0];
+  $("title").focus();
+}
+
+function closeModal() {
+  $("modalBackdrop").classList.remove("show");
+  $("expenseForm").reset();
+}
